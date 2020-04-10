@@ -115,7 +115,6 @@ public class ViewControllerTest {
 	}
 
 	@Test
-	
 	public void shouldGetDebtorsData() throws Exception {
 		List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 		CustomUserDetails customUser = new CustomUserDetails(1, "userTest@test.com", "12345", authorities, null);
