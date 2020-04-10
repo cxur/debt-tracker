@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http:www.thymeleaf.org">
+<head>
+<!-- <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="author" content="Cristhian Urcuyo">
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/datatables/js/dataTables.bootstrap4.min.js}"></script>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/webjars/datatables/css/dataTables.bootstrap4.min.css} " />
+<link th:href="@{/css/custom-style.css}" rel="stylesheet">
+<link th:href="@{/css/navbar-style.css}" rel="stylesheet"> -->
+</head>
+<body>
+
+	<header class="header-fixed" th:fragment="header-section">
+		<div class="logout-section">
+			<img class="header-profile-pic"
+				src="https://pbs.twimg.com/profile_images/378800000639740507/fc0aaad744734cd1dbc8aeb3d51f8729_400x400.jpeg" />
+			<a class="logout-link" href="">LOGOUT</a>
+		</div>
+
+	</header>
+	<nav class="navbar navbar-expand-lg fixed-left navbar-light navbar-style"
+		th:fragment="navigationBar">
+		<div class="container">
+			<div class="column">
+				<a class="navbar-brand" th:href="@{~/dashboard}">
+					<svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"
+						fill="currentColor">
+						<path fill-rule="evenodd"
+							d="M22 4h-20c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2v-12c0-1.104-.896-2-2-2zm-19 5.78c0-.431.349-.78.78-.78h.428v1.125h-1.208v-.345zm0 .764h1.208v.968h-1.208v-.968zm0 1.388h1.208v1.068h-.428c-.431 0-.78-.349-.78-.78v-.288zm3 5.068h-3v-1h3v1zm1-4.78c0 .431-.349.78-.78.78h-.429v-1.068h1.209v.288zm0-.708h-1.209v-.968h1.209v.968zm0-1.387h-1.629v2.875h-.743v-4h1.592c.431 0 .78.349.78.78v.345zm4 6.875h-3v-1h3v1zm1-6.5c0-1.381 1.119-2.5 2.5-2.5.484 0 .937.138 1.32.377-.531.552-.857 1.3-.857 2.123 0 .824.327 1.571.857 2.123-.383.239-.836.377-1.32.377-1.381 0-2.5-1.119-2.5-2.5zm4 6.5h-3v-1h3v1zm5 0h-3v-1h3v1zm-2.5-4c-1.38 0-2.5-1.119-2.5-2.5s1.12-2.5 2.5-2.5c1.381 0 2.5 1.119 2.5 2.5s-1.119 2.5-2.5 2.5z" /></svg>
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+					aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarText">
+					<ul class="navbar-nav">
+						<li class="nav-item active">
+
+							<a class="nav-link" th:href="@{~/dashboard}">
+								<span>
+									<svg class="bi bi-house" width="2em" height="2em" viewBox="0 0 20 20" fill="currentColor"
+										xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd"
+											d="M9.646 3.146a.5.5 0 01.708 0l6 6a.5.5 0 01.146.354v7a.5.5 0 01-.5.5h-4.5a.5.5 0 01-.5-.5v-4H9v4a.5.5 0 01-.5.5H4a.5.5 0 01-.5-.5v-7a.5.5 0 01.146-.354l6-6zM4.5 9.707V16H8v-4a.5.5 0 01.5-.5h3a.5.5 0 01.5.5v4h3.5V9.707l-5.5-5.5-5.5 5.5z"
+											clip-rule="evenodd" />
+  <path fill-rule="evenodd" d="M15 4.5V8l-2-2V4.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z"
+											clip-rule="evenodd" />
+</svg>
+								</span>
+								<span class="nav-image-caption">Dashboard</span>
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+
+							<a class="nav-link" th:href="@{/getTable}">
+								<svg class="bi bi-list-check" width="3em" height="2em" viewBox="0 0 20 20"
+									fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd"
+										d="M7 13.5a.5.5 0 01.5-.5h9a.5.5 0 010 1h-9a.5.5 0 01-.5-.5zm0-4a.5.5 0 01.5-.5h9a.5.5 0 010 1h-9a.5.5 0 01-.5-.5zm0-4a.5.5 0 01.5-.5h9a.5.5 0 010 1h-9a.5.5 0 01-.5-.5zM5.854 4.146a.5.5 0 010 .708l-1.5 1.5a.5.5 0 01-.708 0l-.5-.5a.5.5 0 11.708-.708L4 5.293l1.146-1.147a.5.5 0 01.708 0zm0 4a.5.5 0 010 .708l-1.5 1.5a.5.5 0 01-.708 0l-.5-.5a.5.5 0 11.708-.708L4 9.293l1.146-1.147a.5.5 0 01.708 0zm0 4a.5.5 0 010 .708l-1.5 1.5a.5.5 0 01-.708 0l-.5-.5a.5.5 0 01.708-.708l.146.147 1.146-1.147a.5.5 0 01.708 0z"
+										clip-rule="evenodd" />
+</svg>
+								<span class="nav-image-caption">Debts List</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/addNewDebtInfo}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"
+									fill="currentColor">
+									<path fill-rule="evenodd"
+										d="M10.553 3.123c.47-.079.953-.123 1.447-.123 4.971 0 9 4.029 9 9 0 1.742-.5 3.363-1.359 4.738.226-.877.359-1.791.359-2.738 0-5.537-4.116-10.119-9.447-10.877zm12.447 8.877c0 .947-.133 1.861-.359 2.738.859-1.375 1.359-2.996 1.359-4.738 0-4.971-4.029-9-9-9-.494 0-.977.044-1.447.123 5.331.758 9.447 5.34 9.447 10.877zm-14-5c3.859 0 7 3.14 7 7s-3.141 7-7 7-7-3.14-7-7 3.141-7 7-7zm0-2c-4.971 0-9 4.029-9 9s4.029 9 9 9 9-4.029 9-9-4.029-9-9-9zm3.416 10.736c0-1.787-1.86-2.285-3.286-2.955-.864-.449-.757-1.525.483-1.597.691-.042 1.396.162 2.036.387l.302-1.372c-.756-.23-1.43-.335-2.035-.352v-.847h-.832v.889c-1.621.223-2.488 1.24-2.488 2.375 0 2.032 2.373 2.342 3.148 2.703 1.061.474.863 1.458-.094 1.675-.83.188-1.893-.14-2.688-.45l-.378 1.37c.744.385 1.637.591 2.5.605v.833h.832v-.877c1.381-.194 2.503-.956 2.5-2.387z" /></svg>
+								<br />
+								<span class="nav-image-caption">Add Debtors</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+</body>
+</html>

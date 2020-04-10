@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http:www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="author" content="Cristhian Urcuyo">
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<link th:href="@{./css/custom-style.css}" rel="stylesheet">
+<script th:src="@{./js/custom-script.js}"></script>
+<link th:href="@{/css/navbar-style.css}" rel="stylesheet">
+
+<title>Add Debt Info</title>
+</head>
+<body>
+
+<div th:replace="navBarFragment :: header-section"></div>
+<div th:replace="navBarFragment :: navigationBar"></div>
+
+	<div class="container content-position">
+		<div class="row">
+			<div class=" col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-sm-12">
+
+				<form class="debt-form" th:action="@{/saveDebtInfo}" method="post" enctype="multipart/form-data">
+
+					<!-- progressbar -->
+					<ul id="progressbar">
+						<li class="active">Debtor Details</li>
+						<li>Debt Information</li>
+					</ul>
+
+					<div th:if="${message}" class="alert alert-primary alert-dismissible fade show" role="alert">
+						<strong>Success!</strong>
+						We'll make sure you never miss a payment date!
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<fieldset>
+						<h2 class="fs-title">Debtor Personal Information</h2>
+						<h3 class="fs-subtitle">The more info you have the better</h3>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="firstName"> First Name:</label>
+								<input type="text" name="firstName" id="firstName" th:field="*{debtorInfo.firstName}">
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="lastName"> Last Name:</label>
+								<input type="text" name="lastName" id="lastName" th:field="*{debtorInfo.lastName}">
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="emailAddress"> Email Address:</label>
+								<input type="email" name="emailAddress" id="emailAddress"
+									th:field="*{debtorInfo.emailAddress}">
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="country"> Country:</label>
+								<select th:field="*{debtorInfo.country}" id="country">
+									<option disabled="disabled" value="0" selected="selected">Select a Country</option>
+									<option th:each="country:${countryList}" th:value="${country}" th:utext="${country}"></option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="phoneNumber"> Phone Number:</label>
+								<input type="text" name="phoneNumber" id="phoneNumber" th:field="*{debtorInfo.phoneNumber}">
+							</div>
+
+							<div class="form-group col-md-6">
+								<label for="company"> Company:</label>
+								<input type="text" name="company" id="company" th:field="*{debtorInfo.company}">
+							</div>
+						</div>
+						<div class="input-group mb-3">
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="inputGroupFile02"
+									th:field="*{debtorInfo.pictureUpload}" accept="image/*">
+								<label class="custom-file-label" for="inputGroupFile02">Choose profile picture file</label>
+							</div>
+						</div>
+
+						<input type="button" name="next" id="next" class="next action-button" value="Next" />
+
+					</fieldset>
+
+					<fieldset>
+						<h2 class="fs-title">Debt Information</h2>
+						<h3 class="fs-subtitle">Feel free to design the perfect payment plan</h3>
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="debtAmount">Debt Amount:</label>
+								<input type="number" id="debtAmount" th:field="*{debtInfo.debtAmount}">
+
+							</div>
+							<div class="form-group col-md-6">
+								<label for="debtCurrency">Debt Currency:</label>
+								<select th:field="*{debtInfo.debtCurrency}">
+									<option disabled="disabled" value="0" selected="selected">Select a Currency</option>
+									<option th:each="currency:${currencyList}" th:value="${currency}" th:utext="${currency}"></option>
+								</select>
+							</div>
+						</div>
+						<label for="NumberOfPayments">Number of payments:</label>
+						<input type="number" id="NumberOfPayments" th:field="*{debtInfo.numberOfPayments}">
+						<label for="paymentFrequency">Payment Frequency:</label>
+						<select th:field="*{debtInfo.paymentFrequencyUnit}">
+							<option disabled="disabled" value="0" selected="selected">Select a Payment Frequency</option>
+							<option value="Weekly" selected="selected">Weekly</option>
+							<option value="Biweekly" selected="selected">Biweekly</option>
+							<option value="Monthly" selected="selected">Monthly</option>
+						</select>
+						
+						<label for="debtConcept">Debt Concept:</label>
+						<input type="text" id="debtConcept" th:field="*{debtInfo.debtConcept}">
+						
+						<label for="debtComments">Debt Comments:</label>
+						<textarea rows="4" cols="50" id="debtComments" th:field="*{debtInfo.debtComments}"></textarea>
+						
+						<input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+						<input type="submit" name="submit" class="submit action-button" value="Submit" />
+					</fieldset>
+				</form>
+			</div>
+
+
+
+		</div>
+
+	</div>
+
+</body>
+</html>

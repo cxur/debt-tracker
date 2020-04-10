@@ -1,0 +1,53 @@
+.fixed-left {
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	z-index: 1030 !important;
+	bottom: 0 !important;
+	align-items: flex-start;
+	max-width: 150px;
+	padding:10px 10px;
+}
+
+.navbar-nav {
+	flex-direction: column !important;
+}
+
+.navbar-style{
+	background-color: #42425D !important;
+	text-align: center !important;
+}
+
+.nav-link {
+	color:white !important;
+	text-align: center !important;
+}
+
+.nav-link:hover {
+	color:#2F3146 !important;
+}
+
+.navbar-brand{
+	color:white !important;
+	text-align: center !important;
+	margin-right: 0;
+}
+
+.nav-content{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin: 0px auto;
+}
+
+.content-position {
+	position: absolute;
+	padding-top: 4%;
+	margin: auto;
+	margin-left: 190px;
+	width: 88%;
+}
+
+.nav-image-caption {
+	display: block;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http:www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="author" content="Cristhian Urcuyo">
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/datatables/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{./js/custom-script.js}"></script>
+<script th:src="@{./js/jquery-debtors-table.js}"></script>
+
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<!-- <link rel="stylesheet" th:href="@{/webjars/datatables/css/jquery.dataTables.min.css} " /> -->
+<link rel="stylesheet" th:href="@{/webjars/datatables/css/dataTables.bootstrap4.min.css} " />
+<link th:href="@{./css/custom-style.css}" rel="stylesheet">
+<link th:href="@{/css/navbar-style.css}" rel="stylesheet">
+
+<title>Debt Info Table</title>
+</head>
+<body>
+	<div th:replace="navBarFragment :: header-section"></div>
+	<div th:replace="navBarFragment :: navigationBar"></div>
+
+	<div class="table-section">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12  col-md-12 col-sm-12 ">
+					<table class="table table-striped" id="debtors-information" style="width: 100%">
+						<thead class="thead-light">
+							<tr>
+								<th scope="col"></th>
+								<th scope="col">Nombre</th>
+								<th scope="col">Apellido</th>
+								<th scope="col">Email Address</th>
+								<th scope="col">Phone Number</th>
+								<th scope="col">Company</th>
+								<th scope="col">Country</th>
+								<th scope="col">Actions</th>
+							</tr>
+						</thead>
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title fs-title" id="exampleModalLongTitle">Debtor Personal Information</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div id="edit-profile-pic" style="text-align: center" class="col-sm-12"></div>
+						</div>
+
+						<form class="debt-form" th:action="@{/updateDebtorInfo}" method="post"
+							enctype="multipart/form-data" id="updateDebtorInfoForm">
+
+
+							<div th:if="${message}" class="alert alert-primary alert-dismissible fade show" role="alert">
+								<strong>Success!</strong>
+								The information about
+								<span th:utext="*{debtorInfo.firstName}"></span>
+								has been successfully updated!
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<fieldset>
+								<input type="hidden" id="debtorInfoId" name="debtorInfoId" th:field=*{debtorInfo.debtorId}>
+								<input type="hidden" id="debtorProfilePicDB" name="debtorProfilePicDB"
+									th:field=*{debtorInfo.debtorPicture}>
+								<h3 class="fs-subtitle">The more info you have the better</h3>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="firstName"> First Name:</label>
+										<input type="text" name="firstName" id="firstNameUpdate"
+											th:field="*{debtorInfo.firstName}">
+									</div>
+
+									<div class="form-group col-md-6">
+										<label for="lastName"> Last Name:</label>
+										<input type="text" name="lastName" id="lastNameUpdate" th:field="*{debtorInfo.lastName}">
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="emailAddress"> Email Address:</label>
+										<input type="email" name="emailAddress" id="emailAddressUpdate"
+											th:field="*{debtorInfo.emailAddress}">
+									</div>
+
+									<div class="form-group col-md-6">
+										<label for="country"> Country:</label>
+										<select th:field="*{debtorInfo.country}" id="countryUpdate">
+											<option disabled="disabled" value="0" selected="selected">Select a Country</option>
+											<option th:each="country:${countryList}" th:value="${country}" th:utext="${country}"></option>
+										</select>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="phoneNumber"> Phone Number:</label>
+										<input type="text" name="phoneNumber" id="phoneNumberUpdate"
+											th:field="*{debtorInfo.phoneNumber}">
+									</div>
+
+									<div class="form-group col-md-6">
+										<label for="company"> Company:</label>
+										<input type="text" name="company" id="companyUpdate" th:field="*{debtorInfo.company}">
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" id="profilePictureUpdate"
+											th:field="*{debtorInfo.pictureUpload}" accept="image/*">
+										<label class="custom-file-label" for="inputGroupFile02">Choose profile picture
+											file</label>
+									</div>
+								</div>
+
+								<!-- <input type="button" name="next" id="next" class="next action-button" value="Next" /> -->
+
+							</fieldset>
+
+							<!-- <fieldset>
+								<h2 class="fs-title">Debt Information</h2>
+								<h3 class="fs-subtitle">Feel free to design the perfect payment plan</h3>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="debtAmount">Debt Amount:</label>
+										<input type="number" id="debtAmountUpdate" th:field="*{debtInfo.debtAmount}">
+
+									</div>
+									<div class="form-group col-md-6">
+										<label for="debtCurrency">Debt Currency:</label>
+										<select th:field="*{debtInfo.debtCurrency}" id=currencyUpdate>
+											<option disabled="disabled" value="0" selected="selected">Select a Currency</option>
+											<option th:each="currency:${currencyList}" th:value="${currency}" th:utext="${currency}"></option>
+										</select>
+									</div>
+								</div>
+								<label for="NumberOfPayments">Number of payments:</label>
+								<input type="number" id="NumberOfPaymentsUpdate" th:field="*{debtInfo.numberOfPayments}">
+								<label for="paymentFrequency">Payment Frequency:</label>
+								<select th:field="*{debtInfo.paymentFrequencyUnit}" id="paymentFrequencyUnitUpdate">
+									<option disabled="disabled" value="0" selected="selected">Select a Payment
+										Frequency</option>
+									<option value="Weekly" selected="selected">Weekly</option>
+									<option value="Biweekly" selected="selected">Biweekly</option>
+									<option value="Monthly" selected="selected">Monthly</option>
+								</select>
+								<input type="button" name="previous" class="previous action-button-previous"
+									value="Previous" />
+
+							</fieldset> -->
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<input type="submit" name="submit" class="submit action-button" value="Update" />
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http:www.thymeleaf.org">
+<head>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/datatables/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/js/custom-script.js}"></script>
+<script th:src="@{/js/jquery-debtors-table.js}"></script>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/webjars/datatables/css/dataTables.bootstrap4.min.css} " />
+<link th:href="@{/css/custom-style.css}" rel="stylesheet">
+<link th:href="@{/css/navbar-style.css}" rel="stylesheet">
+<title>Payment Details</title>
+</head>
+<body>
+	<div th:replace="navBarFragment :: header-section"></div>
+	<div th:replace="navBarFragment :: navigationBar"></div>
+	<div class="container content-position">
+		<div class="row">
+			<div class="col">
+				<div class="card text-center">
+					<div class="card-header text-white header-color">Debt Details</div>
+					<div class="card-body">
+						<h5 class="card-title" th:utext="*{debtorInfo.firstName}"></h5>
+						<div id="edit-profile-pic" style="text-align: center" class="col-sm-12">
+							<img th:if="*{debtorInfo.debtorPicture}" alt="" style="width: 100px; height: 100px"
+								class="debtor-profile-pic"
+								th:src="@{'data:image/png;base64,'+${debtorInfo.pictureBase64ToString}}">
+							<svg th:unless="*{debtorInfo.debtorPicture}" style="width: 100px; height: 100px"
+								class="debtor-profile-pic" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+								viewBox="0 0 24 24">
+								<path
+									d="M12 2c2.757 0 5 2.243 5 5.001 0 2.756-2.243 5-5 5s-5-2.244-5-5c0-2.758 2.243-5.001 5-5.001zm0-2c-3.866 0-7 3.134-7 7.001 0 3.865 3.134 7 7 7s7-3.135 7-7c0-3.867-3.134-7.001-7-7.001zm6.369 13.353c-.497.498-1.057.931-1.658 1.302 2.872 1.874 4.378 5.083 4.972 7.346h-19.387c.572-2.29 2.058-5.503 4.973-7.358-.603-.374-1.162-.811-1.658-1.312-4.258 3.072-5.611 8.506-5.611 10.669h24c0-2.142-1.44-7.557-5.631-10.647z" /></svg>
+						</div>
+						<h5 class="card-title" style="padding: 10px">
+							<span th:text="*{debtorInfo.firstName}"></span>
+							Currently has
+							<span style="color: red" th:text="*{debtPaymentInfo.size()}"></span>
+							Debt/s with you
+						</h5>
+						<h6 style="padding: 10px">from the select box below please select the concept you wish to
+							see the payment detail from</h6>
+						<select id="concept-selectbox" style="width: 30%" class="custom-select custom-select-sm-4"
+							th:onchange="showTableDetail(this)">
+							<option value=0 selected="selected">Select an option</option>
+							<option th:each="debtInformation : ${debtPaymentInfo}"
+								th:value="${debtInformation.key.debtInfoId}"
+								th:utext="${debtInformation.key.getDebtConcept()}"></option>
+						</select>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-lg-10 col-md-10 col-sm-10 offset-1 mx-auto">
+				<div th:id="'debtinfo-card-'+${debtInformation.key.debtInfoId}"
+					th:each="debtInformation : ${debtPaymentInfo}" class="card text-center mt-5"
+					style="max-width: 600px; margin: auto; display: none">
+					<div class="card-header text-white header-color">Debt Information</div>
+					<div class="card-body">
+						<h4 class="card-title" style="color: red">The 6% of this debt has been paid</h4>
+					</div>
+					<dl class="row">
+						<dt class="col-sm-9">Debt Amount:</dt>
+						<dd th:utext="${debtInformation.key.debtAmount}" class="col-sm-3"></dd>
+
+						<dt class="col-sm-9">Currency:</dt>
+						<dd th:utext="${debtInformation.key.debtCurrency}" class="col-sm-3"></dd>
+
+						<dt class="col-sm-9">Number of payments:</dt>
+						<dd th:utext="${debtInformation.key.numberOfPayments}" class="col-sm-3"></dd>
+
+						<dt class="col-sm-9">Payment Frequency:</dt>
+						<dd th:utext="${debtInformation.key.paymentFrequencyUnit}" class="col-sm-3"></dd>
+
+						<dt class="col-sm-9">Debt Concept:</dt>
+						<dd th:utext="${debtInformation.key.debtConcept}" class="col-sm-3"></dd>
+
+						<dt class="col-sm-9">Debt Comments:</dt>
+						<dd th:utext="${debtInformation.key.debtComments}" class="col-sm-3"></dd>
+					</dl>
+				</div>
+			</div>
+			<table th:id="'table-payment-'+${debtInformation.key.debtInfoId}"
+				th:each="debtInformation : ${debtPaymentInfo}" class="table table-striped mt-5"
+				style="display: none; width: 100%; box-shadow: 0 0 15px 1px rgba(225, 225, 225, 0.6);">
+				<thead class="header-color">
+					<tr>
+						<th scope="col">Payment Amount</th>
+						<th scope="col">Estimated Payment Date</th>
+						<th scope="col">Payment Status</th>
+						<th scope="col">Actual Payment Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="text-align: center" th:each="paymentInfo: ${debtInformation.value}">
+						<td scope="row" th:utext="${paymentInfo.periodicPaymentAmount}"></td>
+						<td scope="row" th:utext="${paymentInfo.estimatedPaymentDate}"></td>
+						<td th:if="${paymentInfo.paymentStatus == 'pending'}" scope="row">
+							<span class="badge badge-danger p-1">
+								<span th:utext="${paymentInfo.paymentStatus}"></span>
+							</span>
+						</td>
+						<td th:if="${paymentInfo.paymentStatus != 'pending'}" scope="row">
+							<span class="badge badge-success">
+								<span th:utext="${paymentInfo.paymentStatus}"></span>
+							</span>
+						</td>
+						<td scope="row" th:utext="${paymentInfo.actualPaymentDate}"></td>
+					</tr>
+			</table>
+		</div>
+	</div>
+	</div>
+
+</body>
+</html>
